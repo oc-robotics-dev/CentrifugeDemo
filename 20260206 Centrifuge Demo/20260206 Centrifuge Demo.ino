@@ -8,6 +8,9 @@
 const int analogInPin = A0;   // Analog input pin that the potentiometer is attached to
 const int analogOutPin = 9;  // Analog output pin that the LED is attached to (must be PWM pin, e.g., 3, 5, 6, 9, 10, or 11 on Uno)
 
+// Speed cap (PWM limit)
+const int maxPWM = 120;      // <-- adjust this to a safe value (0–255)
+
 int sensorValue = 0;        // value read from the pot
 int outputValue = 0;        // value output to the PWM (analog out)
 
@@ -20,8 +23,8 @@ void loop() {
   // Read the analog in value:
   sensorValue = analogRead(analogInPin);            
 
-  // Map it to the range of the analog out (0-1023 -> 0-255):
-  outputValue = map(sensorValue, 0, 1023, 0, 255);    
+  // Map it to the range of the analog out, with speed cap (0-1023 -> 0-maxPWM):
+  outputValue = map(sensorValue, 0, 1023, 0, maxPWM);    
 
   // Change the analog out value:
   analogWrite(analogOutPin, outputValue);           
